@@ -25,11 +25,14 @@ jobs:
 
       - run: chmod u+x *
       - run: zip -r /tmp/savings.zip *
+
       - uses: actions/setup-python@v1
         with:
           python-version: 3.7
       - run: pip3 install awscli
-      - run: aws lambda update-function-code --function-name savings --zip-file fileb:///tmp/savings.zip --publish
+
+      - name: lambda
+        run: aws lambda update-function-code --function-name savings --zip-file fileb:///tmp/savings.zip --publish
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
