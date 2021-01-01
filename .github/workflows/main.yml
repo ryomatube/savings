@@ -31,12 +31,13 @@ jobs:
           python-version: 3.7
       - run: pip3 install awscli
 
-      - name: lambda
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ap-northeast-1
-        run: |
-          aws lambda update-function-code --function-name savings --zip-file fileb:///tmp/savings.zip --publish
+      - name: Configure AWS credentials from bot account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - run: aws lambda update-function-code --function-name savings --zip-file fileb:///tmp/savings.zip --publish
       
 
